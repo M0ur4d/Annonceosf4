@@ -10,6 +10,9 @@ use App\Entity\User;
 use App\Entity\Photo;
 use App\Entity\Categorie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class AnnonceType extends AbstractType
 {
@@ -23,13 +26,12 @@ class AnnonceType extends AbstractType
             ->add('adresse')
             ->add('cp')
             ->add('pays')
-//            ->add('date_enregistrement')
             ->add('ville')
-            ->add('member_id', EntityType::class, [
-                                                                'class' => User::class,
-                                                                'choice_label' => 'pseudo',
-                                                                'placeholder' => 'Choississez un membre'
-                                                              ])
+//            ->add('member_id', EntityType::class, [
+//                                                                'class' => User::class,
+//                                                                'choice_label' => 'pseudo',
+//                                                                'placeholder' => 'Choississez un membre'
+//                                                              ])
 
 
             ->add('categorie_id', EntityType::class, [
@@ -38,7 +40,10 @@ class AnnonceType extends AbstractType
                                                                     return $cat->getTitre() . " (" . substr($cat->getMotscles(), 0, 10) . "...)";},
                                                                 'placeholder' => 'Choississez une categorie'
                                                                 ])
-//            ->add('photo_id')
+            ->add('photo_id', FileType::class, [
+                'label' => '1ère Photo',
+                "required"  => false
+            ])
         ;
     }
 

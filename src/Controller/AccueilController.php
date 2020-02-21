@@ -26,4 +26,5 @@ class AccueilController extends AbstractController
         return $this->render('base.html.twig', compact("categories", "users", "annonces", "regions"));
 
     }
+
 }

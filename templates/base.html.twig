@@ -46,6 +46,9 @@
                 <a class="navbar-item" href="{{ path("accueil") }}">
                     Accueil
                 </a>
+                <a class="navbar-item" href="{{ path("annonce_add") }}">
+                    Publier
+                </a>
                 <a class="navbar-item" href="{{ path("membre_list") }}">
                     Membres
                 </a>
@@ -61,10 +64,19 @@
                 <a class="navbar-item" href="{{ path("note") }}">
                     Note
                 </a>
+                {% elseif is_granted("ROLE_USER") %}
+                    <a class="navbar-item" href="{{ path("accueil") }}">
+                        Accueil
+                    </a>
+                    <a class="navbar-item" href="{{ path("annonce_add") }}">
+                        Publier
+                    </a>
+
                 {% else %}
                     <a class="navbar-item" href="{{ path("accueil") }}">
                         Accueil
                     </a>
+
                 {% endif %}
 
             </div>
@@ -80,7 +92,7 @@
                             </a>
 
                         {% else %}
-                            <a class="button is-primary is-small" href="#">
+                            <a class="button is-primary is-small" href="{{ path("app_register") }}">
                                 Inscription
                             </a>
                             <a class="button is-light is-small" href="{{ path("app_login") }}">
@@ -166,13 +178,38 @@
                     <button>Filtrer</button>
                 </form>
             </aside>
-
             <section class="col-8">
                 {% for ann in annonces %}
-                    <p>{{ ann.titre }}</p>
+                    <div class="annonce row">
+                        <div class="col-3">
+                            <img src="{{asset('build/images/'~ann.photoid.photo1) }}" alt="monimg" />
+                        </div>
+                        <div class="col-8">
+                            <h3>{{ ann.titre }}</h3>
+                            <p class="description_courte">{{ ann.descriptioncourte }}</p>
+                            <p>
+                                <span class="membre">{{ ann.membreid.pseudo }}</span><br>
+                                <span class="prix pull-right">{{ ann.prix }} €</span>
+                            </p>
+                        </div>
+
+
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <div class="col-1">
+                                <a href="#">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <hr>
                 {% endfor %}
             </section>
         </div>
+
+{% endblock %}
+{% block vignette %}
 
 {% endblock %}
 {% block content %}{% endblock %}
