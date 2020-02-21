@@ -1,0 +1,35 @@
+{% extends "base.html.twig"  %}
+    {% block stylesheets %}{% endblock %}
+
+
+{% block body %}
+
+{#    {% for message in app.flashes('success') %}#}
+{#        <div class="alert alert-success">#}
+{#            {{ message }}#}
+{#        </div>#}
+{#    {% endfor %}#}
+    <button type="button">
+        <a href="{{ path("categorie_add") }}">Ajouter une categorie</a>
+    </button><br><br>
+    <table border="1">
+        <tr>
+            <td><b>ID categorie</b></td>
+            <td><b>Titre</b></td>
+            <td><b>Mots cles</b></td>
+            <td colspan="3"><b>Actions</b></td>
+        </tr>
+        {% for categorie in liste %}
+        <tr>
+            <td>{{ categorie.id }}</td>
+            <td>{{ categorie.titre }}</td>
+            <td>{{ categorie.motscles }}</td>
+            <td><a href="#"><i class='fa fa-pen'></i></a> </td>
+            <td><a href="#"><i class='fa fa-trash'></i></a></td>
+         </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

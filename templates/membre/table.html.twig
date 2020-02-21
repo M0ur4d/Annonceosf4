@@ -1,0 +1,46 @@
+{% extends "base.html.twig"  %}
+    {% block stylesheets %}{% endblock %}
+
+
+{% block body %}
+
+
+    <button type="button">
+        <a href="{{ path("newmembre") }}">Ajouter un membre</a>
+    </button><br><br>
+    <table border="1">
+        <tr>
+            <td><b>ID membre</b></td>
+            <td><b>Pseudo</b></td>
+            <td><b>Email</b></td>
+            <td><b>Nom</b></td>
+            <td><b>Prenom</b></td>
+            <td><b>Telephone</b></td>
+            <td><b>Civilité</b></td>
+            <td><b>Date Enregistrement</b></td>
+            <td><b>Statut</b></td>
+            <td colspan="3"><b>Actions</b></td>
+        </tr>
+        {% for user in liste %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.pseudo }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.nom }}</td>
+            <td>{{ user.prenom }}</td>
+            <td>{{ user.telephone }}</td>
+            <td>{{ user.civilite }}</td>
+            <td>{{ user.dateenregistrement|date('d/m/Y')}}</td>
+            <td> {% for statut in user.roles %}
+                {{ statut }}
+                {% endfor %}</td>
+            <td><a href="{{ path("newmembre") }}"><i class='fa fa-pen'></i></a> </td>
+            <td><a href="{{ path("membre_delete", { id: user.id }) }}"><i class='fa fa-trash'></i></a></td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

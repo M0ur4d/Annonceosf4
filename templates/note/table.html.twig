@@ -1,0 +1,37 @@
+{% extends "base.html.twig"  %}
+    {% block stylesheets %}{% endblock %}
+
+
+{% block body %}
+
+
+    <button type="button">
+        <a href="{{ path("note_add") }}">Ajouter une note</a>
+    </button><br><br>
+    <table border="1">
+        <tr>
+            <td><b>ID Note</b></td>
+            <td><b>ID Membre 1</b></td>
+            <td><b>ID Membre 2</b></td>
+            <td><b>Note</b></td>
+            <td><b>Avis</b></td>
+            <td><b>Date enregistrement</b></td>
+            <td colspan="3"><b>Actions</b></td>
+        </tr>
+        {% for note in liste %}
+        <tr>
+            <td>{{ note.id }}</td>
+            <td>{{ note.membrenoteid.id ~ " - " ~ note.membrenoteid.email }}</td>
+            <td>{{ note.membrenotantid.id ~ " - " ~ note.membrenotantid.email }}</td>
+            <td>{{ note.note }}</td>
+            <td>{{ note.avis }}</td>
+            <td>{{ note.dateenregistrement|date('d/m/Y')}}</td>
+            <td><a href="#"><i class='fa fa-pen'></i></a> </td>
+            <td><a href="#"><i class='fa fa-trash'></i></a></td>
+         </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

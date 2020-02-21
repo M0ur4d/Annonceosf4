@@ -1,0 +1,67 @@
+{% extends "base.html.twig"  %}
+{% block stylesheets %}{% endblock %}
+{% block body %}
+    <form method="post">
+
+{#        {% if artiste is defined %}#}
+
+{#        <label>Nom</label>#}
+{#        <input  type="text" name="name" value="{{ artiste.name }}"><br>#}
+{#        <label>Description</label>#}
+{#        <textarea name="description">#}
+{#            {{ artiste.description }}#}
+{#        </textarea><br>#}
+{#            <button>Modifier</button>#}
+{#        {% else %}#}
+
+{#            <label>Nom</label>#}
+{#            <input  type="text" name="name" value=""><br>#}
+{#            <label>Description</label>#}
+{#            <textarea name="description">#}
+{#        </textarea><br>#}
+{#            <button>Enregistrer</button>#}
+{#        {% endif %}#}
+
+        <label>Pseudo</label><input  type="text" name="pseudo" value="{{ user.pseudo|default("") }}"><br>
+
+        <label>Mot de passe</label><input  type="password" name="password" value="{{ user.password|default("") }}"><br>
+        <label>Nom</label><input  type="text" name="nom" value="{{ user.nom|default("") }}"><br>
+
+        <label>Prenom</label><input  type="text" name="prenom" value="{{ user.prenom|default("") }}"><br>
+
+        <label>Telephone</label><input  type="text" name="telephone" value="{{ user.telephone|default("") }}"><br>
+
+        <label>Email</label><input  type="email" name="email" value="{{ user.email|default("") }}"><br>
+
+        <label for="civilite">Civilité</label>
+        <select name="civilite">
+            <option></option>
+            <option value="h">Monsieur</option>
+            <option value="f" >Madame</option>
+            <option value="a" >Autre</option>
+        </select><br>
+
+        <label for="roles">Statut</label>
+        <select name="roles">
+            <option></option>
+            <option value="ROLE_ADMIN">Admin</option>
+            <option value="ROLE_USER" >Membre</option>
+        </select>
+
+        {% if mode is defined %}
+            {% if mode == "modification" %}
+                <button>Modifier</button>
+            {% elseif mode == "suppression" %}
+                <button>Supprimer</button>
+            {% endif %}
+        {% else %}
+                <button>Enregistrer</button>
+        {% endif %}
+
+        <br>
+        <button type="button">
+        <a href="{{ path("membre_list") }}">Annuler</a>
+        </button>
+
+    </form>
+{% endblock %}

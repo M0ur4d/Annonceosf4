@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+{#     CSS#}
+    {{ encore_entry_link_tags("app") }}
+{#    JS#}
+    {{ encore_entry_script_tags("app") }}
+
+</head>
+<body>
+{% block header %}
+    {#            <nav>#}
+    {#                <ul>#}
+    {#                    <li><a href="#">BASE</a></li>#}
+    {#                    <li><a href="/artist_list">Artist</a></li>#}
+    {#                    <li><a href="/label_page">Label</a></li></ul>#}
+    {#                <ul> <li><a href="#">ADMIN</a></li>#}
+    {#                    <li><a href="/ranking">Ranking</a></li>#}
+    {#                    <li><a href="/record_page">Record</a></li>#}
+    {#                    <li><a href="/artist/newartist">New Artist</a></li>#}
+    {#                    <li><a href="/artist_list">Liste Artist</a></li>#}
+    {#                    <li><a href="/login">Connexion</a></li>#}
+    {#                </ul>#}
+    {#            </nav>#}
+    <nav class="navbar has-background-grey-darker is-dark">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ path("accueil") }}">
+                <p class="subtitle is-4 has-text-primary">
+                    <b>Annonceo</b>
+                </p>
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                {% if is_granted("ROLE_ADMIN") %}
+                <a class="navbar-item" href="{{ path("accueil") }}">
+                    Accueil
+                </a>
+                <a class="navbar-item" href="{{ path("membre_list") }}">
+                    Membres
+                </a>
+                <a class="navbar-item" href="{{ path("categorie") }}">
+                    Categories
+                </a>
+                <a class="navbar-item" href="{{ path("commentaire") }}">
+                    Commentaires
+                </a>
+                <a class="navbar-item" href="{{ path("annonce") }}">
+                    Annonces
+                </a>
+                <a class="navbar-item" href="{{ path("note") }}">
+                    Note
+                </a>
+                {% else %}
+                    <a class="navbar-item" href="{{ path("accueil") }}">
+                        Accueil
+                    </a>
+                {% endif %}
+
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                            <a class="button is-light is-small" href="{{ path("membre")}}">
+                                <i class="fas fa-user"></i>&nbsp&nbsp&nbsp{{ app.user.pseudo }}
+                            </a>
+                            <a class="button is-light is-small" href="{{ path("app_logout") }}">
+                                Déconnexion
+                            </a>
+
+                        {% else %}
+                            <a class="button is-primary is-small" href="#">
+                                Inscription
+                            </a>
+                            <a class="button is-light is-small" href="{{ path("app_login") }}">
+                                Connexion
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+                <a class="navbar-item">
+                    <form action="#">
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input name="query" type="text" class="input is-small" placeholder="Recherche ..." required>
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-small">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{#    {% for message in app.flashes('error') %}#}
+{#        <div class="alert alert-danger">#}
+{#            {{ message }}#}
+{#        </div>#}
+{#    {% endfor %}#}
+
+{% endblock %}
+
+{% block body %}
+    <br>
+        <div class="row">
+
+            <aside class="col-4">
+                <form method="POST">
+                    <div>
+                        <label>Catégorie</label>
+                        <select name="categorie">
+                            <option value="">Toutes les catégories</option>
+                            {% for cat in categories %}
+                                <option value='{{ cat.id }}'>  {{ cat.titre }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Régions</label>
+                        <select name="region">
+                            <option value="">Toutes les régions</option>
+                            {% for ville in regions %}
+                                <option value='{{ ville.ville }}'>  {{ ville.ville }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Membres</label>
+                        <select name="membre">
+                            <option value="">Tous les membres</option>
+                            {% for m in users %}
+                                <option value='{{ m.id }}'>  {{ m.pseudo }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+<br>
+                    <div>
+                        <label>Prix</label>
+                        <input type=range name="prix" min=0 max=10000>
+                    </div>
+<br>
+                    <button>Filtrer</button>
+                </form>
+            </aside>
+
+            <section class="col-8">
+                {% for ann in annonces %}
+                    <p>{{ ann.titre }}</p>
+                {% endfor %}
+            </section>
+        </div>
+
+{% endblock %}
+{% block content %}{% endblock %}
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>

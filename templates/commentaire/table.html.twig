@@ -1,0 +1,34 @@
+{% extends "base.html.twig"  %}
+    {% block stylesheets %}{% endblock %}
+
+
+{% block body %}
+
+    <button type="button">
+        <a href="{{ path("commentaire_add") }}">Ajouter une commentaire</a>
+    </button><br><br>
+    <table border="1">
+        <tr>
+            <td><b>ID commentaire</b></td>
+            <td><b>membre ID</b></td>
+            <td><b>Annonce ID</b></td>
+            <td><b>Commentaire</b></td>
+            <td><b>Date enregistrements</b></td>
+            <td colspan="3"><b>Actions</b></td>
+        </tr>
+        {% for comm in liste %}
+        <tr>
+            <td>{{ comm.id }}</td>
+            <td>{{ comm.membreid.id ~ " - " ~ comm.membreid.email}}</td>
+            <td>{{ comm.annonceid.id ~ " - " ~comm.annonceid.titre }}</td>
+            <td>{{ comm.commentaire }}</td>
+            <td>{{ comm.dateenregistrement|date('d/m/Y')}}</td>
+            <td><a href="#"><i class='fa fa-pen'></i></a> </td>
+            <td><a href="#"><i class='fa fa-trash'></i></a></td>
+         </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html.twig"  %}
+    {% block stylesheets %}{% endblock %}
+
+
+{% block body %}
+
+    <button type="button">
+        <a href="{{ path("annonce_add") }}">Ajouter</a>
+    </button><br><br>
+    <table border="1">
+        <tr>
+            <td><b>ID annonce</b></td>
+            <td><b>Titre</b></td>
+            <td><b>Description courte</b></td>
+            <td><b>Description longue</b></td>
+            <td><b>Prix</b></td>
+            <td><b>Photo</b></td>
+            <td><b>Pays</b></td>
+            <td><b>Ville</b></td>
+            <td><b>adresse</b></td>
+            <td><b>cp</b></td>
+            <td><b>membre</b></td>
+            <td><b>categorie</b></td>
+            <td><b>Date enregistrements</b></td>
+            <td colspan="3"><b>Actions</b></td>
+        </tr>
+        {% for ann in liste %}
+        <tr>
+            <td>{{ ann.id }}</td>
+            <td>{{ ann.titre }}</td>
+            <td>{{ ann.descriptioncourte }}</td>
+            <td>{{ ann.descriptionlongue }}</td>
+            <td>{{ ann.prix }} €</td>
+            <td><img src="{{app.request.basepath}}build/images/{{ ann.photoid.photo1 }}" alt="monimg" /></td>
+            <td>{{ ann.pays }}</td>
+            <td>{{ ann.ville }}</td>
+            <td>{{ ann.adresse }}</td>
+            <td>{{ ann.cp }}</td>
+            <td>{{ ann.membreid.id ~ " - " ~ ann.membreid.pseudo }}</td>
+            <td>{{ ann.categorieid.titre }}</td>
+            <td>{{ ann.dateenregistrement|date('d/m/Y')}}</td>
+            <td><a href="#"><i class='fa fa-pen'></i></a> </td>
+            <td><a href="#"><i class='fa fa-trash'></i></a></td>
+         </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}
