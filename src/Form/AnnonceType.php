@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Annonce;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\User;
@@ -12,6 +13,7 @@ use App\Entity\Categorie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints\File;
 
 class AnnonceType extends AbstractType
@@ -21,7 +23,7 @@ class AnnonceType extends AbstractType
         $builder
             ->add('titre')
             ->add('description_courte')
-            ->add('description_longue')
+            ->add('description_longue', TextareaType::class)
             ->add('prix')
             ->add('adresse')
             ->add('cp')
@@ -40,10 +42,10 @@ class AnnonceType extends AbstractType
                                                                     return $cat->getTitre() . " (" . substr($cat->getMotscles(), 0, 10) . "...)";},
                                                                 'placeholder' => 'Choississez une categorie'
                                                                 ])
-            ->add('photo_id', FileType::class, [
-                'label' => '1ère Photo',
-                "required"  => false
-            ])
+//            ->add('photo_id', FileType::class, [
+//                'label' => '1ère Photo',
+//                "required"  => false
+//            ])
         ;
     }
 

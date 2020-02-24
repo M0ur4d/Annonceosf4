@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    {#     CSS#}
+    {{ encore_entry_link_tags("app") }}
+    {#    JS#}
+    {{ encore_entry_script_tags("app") }}
+
+</head>
+<body>
+{% block header %}
+        {% include "menu/admin.html.twig" %}
+{% endblock %}
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+{#    {% for message in app.flashes('error') %}#}
+{#        <div class="alert alert-danger">#}
+{#            {{ message }}#}
+{#        </div>#}
+{#    {% endfor %}#}
+
+{% block body %}
+    <br>
+    <div class="row">
+
+        <aside class="col-4">
+            <form method="POST">
+                <div>
+                    <label>Catégorie</label>
+                    <select name="categorie">
+                        <option value="">Toutes les catégories</option>
+                        {% for cat in categories %}
+                            <option value='{{ cat.id }}'>  {{ cat.titre }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Régions</label>
+                    <select name="region">
+                        <option value="">Toutes les régions</option>
+                        {% for ville in regions %}
+                            <option value='{{ ville.ville }}'>  {{ ville.ville }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Membres</label>
+                    <select name="membre">
+                        <option value="">Tous les membres</option>
+                        {% for m in users %}
+                            <option value='{{ m.id }}'>  {{ m.pseudo }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>Prix</label>
+                    <input type=range name="prix" min=0 max=10000>
+                </div>
+                <br>
+                <button>Filtrer</button>
+            </form>
+        </aside>
+        <section class="col-8">
+            {% for ann in annonces %}
+                <div class="annonce row">
+                    <div class="col-3">
+                        <img src="{{asset('build/images/'~ann.photoid.photo1) }}" alt="monimg" />
+                    </div>
+                    <div class="col-8">
+                        <h3>{{ ann.titre }}</h3>
+                        <p class="description_courte">{{ ann.descriptioncourte }}</p>
+                        <p>
+                            <span class="membre">{{ ann.membreid.pseudo }}</span><br>
+                            <span class="prix pull-right">{{ ann.prix }} €</span>
+                        </p>
+                    </div>
+
+
+
+                        <div class="col-1">
+                            <a href="#">
+                                <i class="fa fa-pen"></i>
+                            </a>
+                        </div>
+
+
+                </div>
+                <hr>
+            {% endfor %}
+        </section>
+    </div>
+
+{% endblock %}
+{% block vignette %}
+
+{% endblock %}
+{% block content %}{% endblock %}
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>

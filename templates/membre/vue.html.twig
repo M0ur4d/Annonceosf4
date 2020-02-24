@@ -17,8 +17,33 @@
     <p>Civilité :{{ app.user.civilite }}</p>
     <p>Date d'enregistrements : {{ app.user.dateenregistrement|date('d/m/Y')}}</p>
     <p>Statut :  {% for statut in app.user.roles %}
-            {{ statut }}
-        {% endfor %}</p>
+                    {{ statut }}
+                 {% endfor %}</p>
+
+
+    <section class="col-8">
+        {% for ann in liste %}
+        <div class="annonce row">
+        <div class="col-3">
+            <img src="{{asset('build/images/'~ann.photoid.photo1) }}" alt="monimg" />
+        </div>
+        <div class="col-8">
+            <h2>{{ ann.categorieid.titre }}</h2>
+            <p>{{ ann.descriptioncourte }}</p>
+            <p>
+                <span class="membre">{{ ann.membreid.pseudo }}</span><br>
+                <span class="prix pull-right">{{ ann.prix }} €</span>
+            </p>
+        </div>
+            <div class="col-1">
+                <a href="#">
+                    <i class="fa fa-pen"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
 
 
 {% endblock %}
+

@@ -11,7 +11,7 @@ class CommentaireFixtures extends BaseFixture implements DependentFixtureInterfa
 {
     public function loadData(ObjectManager $manager)
     {
-        $this->createMany(2,"commentaire", function ($num){
+        $this->createMany(3,"commentaire", function ($num){
 
             $com = new Commentaire;
 

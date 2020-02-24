@@ -39,7 +39,7 @@ final class Version20200217141936 extends AbstractMigration
         $this->addSql('ALTER TABLE note ADD CONSTRAINT FK_CFBDFA14FD77A62A FOREIGN KEY (membre_notant_id_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_CFBDFA1440EE8798 ON note (membre_note_id_id)');
         $this->addSql('CREATE INDEX IDX_CFBDFA14FD77A62A ON note (membre_notant_id_id)');
-        $this->addSql('DROP INDEX pseudo ON user');
+//        $this->addSql('DROP INDEX pseudo ON user');
     }
 
     public function down(Schema $schema) : void
@@ -64,6 +64,6 @@ final class Version20200217141936 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_CFBDFA1440EE8798 ON note');
         $this->addSql('DROP INDEX IDX_CFBDFA14FD77A62A ON note');
         $this->addSql('ALTER TABLE note ADD membre_note_id INT NOT NULL, ADD membre_notant_id INT NOT NULL, DROP membre_note_id_id, DROP membre_notant_id_id');
-        $this->addSql('CREATE UNIQUE INDEX pseudo ON user (pseudo)');
+//        $this->addSql('CREATE UNIQUE INDEX pseudo ON user (pseudo)');
     }
 }

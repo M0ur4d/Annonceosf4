@@ -26,6 +26,7 @@ class AnnonceFixtures extends BaseFixture implements DependentFixtureInterface
             $annonce->setDateEnregistrement($date);
             $annonce->setCp($this->faker->numberBetween($min = 10000, $max = 99999));
             $annonce->setPays($this->faker->country);
+            $annonce->setVille("Paris");
             $annonce->setMembreId($this->getRandomReference("membre"));
             $annonce->setPhotoId($this->getRandomReference("photo"));
             $annonce->setCategorieId($this->getRandomReference("categorie"));

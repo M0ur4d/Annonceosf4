@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Note;
@@ -13,7 +14,7 @@ class NoteFixtures extends BaseFixture implements DependentFixtureInterface
 {
     public function loadData(ObjectManager $manager)
     {
-        $this->createMany(10, "note", function($num){
+        $this->createMany(3, "note", function($num){
             $note = (new Note)
                 ->setNote($this->faker->numberBetween($min = 1, $max = 5))
                 ->setAvis($this->faker->realText(30))

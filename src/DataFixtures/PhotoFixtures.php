@@ -10,10 +10,10 @@ class PhotoFixtures extends BaseFixture
 {
     public function loadData(ObjectManager $manager)
     {
-        $this->createMany(1000,"photo", function ($num){
+        $this->createMany(10,"photo", function ($num){
 
             $photo = new Photo;
-            $photo->setPhoto1($num.".jpeg");
+            $photo->setPhoto1($num.".jpg");
 
 
             return $photo;

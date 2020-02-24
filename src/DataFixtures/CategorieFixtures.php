@@ -11,7 +11,7 @@ class CategorieFixtures extends BaseFixture
 {
     public function loadData(ObjectManager $manager)
     {
-        $this->createMany(11,"categorie", function ($num){
+        $this->createMany(5,"categorie", function ($num){
 
             $cat = new Categorie();
             $cat->setTitre("titre$num");

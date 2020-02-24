@@ -71,12 +71,14 @@ class AnnonceController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid() ){
 
-//            $photo = new Photo;
-//            $photo->setPhoto1("xx87465x.jpg");
+            $photo = new Photo;
+            $photo->setPhoto1("378.jpg");
 
             $data = $form->getData();
             $data->setDateEnregistrement(new \DateTime('now'));
-//            $data->setPhotoId($photo);
+            $data->setPhotoId($photo);
+
+            $data->setMembreId($this->getUser());
             $em->persist($data);
             $em->flush();
             $this->addFlash('success', 'L\'annonce a bien été enregistré');

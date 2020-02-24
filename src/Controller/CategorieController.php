@@ -71,5 +71,23 @@ class CategorieController extends AbstractController
         return $this->redirectToRoute("categorie");
     }
 
+
+//    /**
+//     * @Route("admin/categorie/delete/{id}", name="categorie_delete")
+//     */
+//    public function cat_delete(CategorieRepository $repo, EntityManagerInterface $em, int $id)
+//    {
+//        $cat = $repo->find($id);
+//        if($_POST){
+//            $em->remove($cat);
+//            $em->flush();
+//            return $this->redirectToRoute("categorie");
+//
+//        }
+//        $this->addFlash('success', 'La categorie a bien été supprimé');
+//        return $this->redirectToRoute("categorie");
+//
+//    }
+
 }
 

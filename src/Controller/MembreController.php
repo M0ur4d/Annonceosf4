@@ -3,20 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\AnnonceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
+use App\Form\AnnonceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\HttpFoundation\Request;
 
 class MembreController extends AbstractController
 {
     /**
      * @Route("/membre", name="membre")
      */
-    public function index()
+    public function index(AnnonceRepository $repo)
     {
-        return $this->render("membre/vue.html.twig");
+        $liste = $repo->findAll();
+        return $this->render("membre/vue.html.twig" , [ "liste" => $liste]);
     }
 
     /**
@@ -83,5 +86,19 @@ class MembreController extends AbstractController
             "mode" => "suppression"]);
 
     }
+
+    /**
+     * @Route("/profil/annonce/ajouter", name="nouvelle_annonce")
+     */
+    public function nouvelle_annonce(Request $rq, EntityManagerInterface $em){
+        $form = $this->createForm(AnnonceType::class);
+        $form->handleRequest($rq);
+
+        $form = $form->createView();
+        return $this->render("membre/annonce.html.twig", compact("form"));
+
+    }
+
+
 
 }

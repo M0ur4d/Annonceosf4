@@ -1,0 +1,30 @@
+ {% extends"base.html.twig" %}
+
+ {% block body %}
+
+    {{ form_start(form) }}
+
+        <div class="columns">
+            <div class="column is_half">
+                {{ form_row(form.titre) }}
+                {{ form_row(form.description_courte) }}
+                {{ form_row(form.description_longue) }}
+                {{ form_row(form.prix) }}
+                {{ form_row(form.categorie_id) }}
+            </div>
+             <div class="column is_half">
+                 <input type="file" name="photo1">
+                 <input type="file" name="photo2">
+                 <input type="file" name="photo3">
+                 <input type="file" name="photo4">
+                 <input type="file" name="photo5">
+                 {{ form_row(form.adresse) }}
+                 {{ form_row(form.cp) }}
+                 {{ form_row(form.ville) }}
+                 {{ form_row(form.pays) }}
+             </div>
+        </div>
+     <button class="button is-primary is-fullwidth">Ajouter</button>
+
+    {{ form_end(form) }}
+ {% endblock %}

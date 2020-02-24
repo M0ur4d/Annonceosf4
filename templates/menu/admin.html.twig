@@ -1,0 +1,97 @@
+
+{% block header %}
+<nav class="navbar has-background-grey-darker is-dark">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{{ path("accueil") }}">
+            <p class="subtitle is-4 has-text-primary">
+                <b>Annonceo</b>
+            </p>
+        </a>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+{#            {% if is_granted("ROLE_ADMIN") %}#}
+                <a class="navbar-item" href="{{ path("accueil") }}">
+                    Accueil
+                </a>
+                <a class="navbar-item" href="{{ path("annonce_add") }}">
+                    Publier
+                </a>
+                <a class="navbar-item" href="{{ path("membre_list") }}">
+                    Membres
+                </a>
+                <a class="navbar-item" href="{{ path("categorie") }}">
+                    Categories
+                </a>
+                <a class="navbar-item" href="{{ path("commentaire") }}">
+                    Commentaires
+                </a>
+                <a class="navbar-item" href="{{ path("annonce") }}">
+                    Annonces
+                </a>
+                <a class="navbar-item" href="{{ path("note") }}">
+                    Note
+                </a>
+{#            {% elseif is_granted("ROLE_USER") %}#}
+{#                <a class="navbar-item" href="{{ path("accueil") }}">#}
+{#                    Accueil#}
+{#                </a>#}
+{#                <a class="navbar-item" href="{{ path("annonce_add") }}">#}
+{#                    Publier#}
+{#                </a>#}
+
+{#            {% else %}#}
+{#                <a class="navbar-item" href="{{ path("accueil") }}">#}
+{#                    Accueil#}
+{#                </a>#}
+
+{#            {% endif %}#}
+
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+{#                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}#}
+                        <a class="button is-light is-small" href="{{ path("membre")}}">
+                            <i class="fas fa-user"></i>&nbsp&nbsp&nbsp{{ app.user.pseudo }}
+                        </a>
+                        <a class="button is-light is-small" href="{{ path("app_logout") }}">
+                            Déconnexion
+                        </a>
+
+{#                    {% else %}#}
+{#                        <a class="button is-primary is-small" href="{{ path("app_register") }}">#}
+{#                            Inscription#}
+{#                        </a>#}
+{#                        <a class="button is-light is-small" href="{{ path("app_login") }}">#}
+{#                            Connexion#}
+{#                        </a>#}
+{#                    {% endif %}#}
+
+                </div>
+            </div>
+            <a class="navbar-item">
+                <form action="#">
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input name="query" type="text" class="input is-small" placeholder="Recherche ..." required>
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-small">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{% block body %}
+{% endblock %}
