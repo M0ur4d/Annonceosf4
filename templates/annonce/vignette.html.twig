@@ -1,34 +1,19 @@
-{% extends 'base.html.twig' %}
-
-
-
-{% block vignette %}
-    <section class="col-8">
-        {% for ann in annonces %}
-            <div class="annonce row">
-                <div class="col-3">
-                    <img src="{{asset('build/images/'~ann.photoid.photo1) }}" alt="monimg" />
-                </div>
-                <div class="col-8">
-                    <h2>{{ ann.titre }}</h2>
-                    <p>{{ ann.descriptioncourte }}</p>
-                    <p>
-                        <span class="membre">{{ ann.membreid.pseudo }}</span><br>
-                        <span class="prix pull-right">{{ ann.prix }} €</span>
-                    </p>
-                </div>
-
-
-                {% if is_granted("ROLE_ADMIN") %}
-                    <div class="col-1">
-                        <a href="#">
-                            <i class="fa fa-pen"></i>
-                        </a>
-                    </div>
-                {% endif %}
-
-            </div>
-            <hr>
-        {% endfor %}
-    </section>
-{% endblock %}
+<div class="row">
+    <div class="col-3">
+        <img src="{{ dossier_images_annonces ~ ann.photoid.photo1 }}" alt="monimg" />
+    </div>
+    <div class="col-8">
+        <h2>{{ ann.categorieid.titre }}</h2>
+        <p>{{ ann.descriptioncourte }}</p>
+        <p>
+            <span class="membre">{{ ann.membreid.pseudo }}</span><br>
+            <span class="prix pull-right">{{ ann.prix }} €</span>
+        </p>
+    </div>
+    <div class="col-1">
+        <a href="#">
+            <i class="fa fa-pen"></i>
+        </a>
+    </div>
+    <hr>
+</div>

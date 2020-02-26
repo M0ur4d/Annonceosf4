@@ -39,14 +39,14 @@
     <br>
         <div class="row">
 
-            <aside class="col-4">
+            <aside class="col-3">
                 <form method="POST">
                     <div>
                         <label>Catégorie</label>
                         <select name="categorie">
                             <option value="">Toutes les catégories</option>
-                            {% for cat in categories %}
-                                <option value='{{ cat.id }}'>  {{ cat.titre }} </option>
+                            {% for cat in categorie %}
+                                <option value='{{ cat.id }}' {{ categorie_choisie == cat.id ? "selected" : ""  }}>  {{ cat.titre }} </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -55,8 +55,8 @@
                         <label>Régions</label>
                         <select name="region">
                             <option value="">Toutes les régions</option>
-                            {% for ville in regions %}
-                                <option value='{{ ville.ville }}'>  {{ ville.ville }} </option>
+                            {% for ville in region %}
+                                <option value='{{ ville.ville }}' {{ ville_choisie == ville.ville ? "selected" : ""  }} >  {{ ville.ville }} </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -65,54 +65,36 @@
                         <label>Membres</label>
                         <select name="membre">
                             <option value="">Tous les membres</option>
-                            {% for m in users %}
-                                <option value='{{ m.id }}'>  {{ m.pseudo }} </option>
+                            {% for m in user %}
+                                <option value='{{ m.id }}' {{ membre_choisi == m.id ? "selected" : ""  }}>  {{ m.pseudo }} </option>
                             {% endfor %}
                         </select>
                     </div>
-<br>
+                    <br>
                     <div>
-                        <label>Prix</label>
-                        <input type=range name="prix" min=0 max=10000>
+                        <label>Prix <output id="prixAffiche">{{ prix_choisi }}</output></label>&nbsp€<br>
+                        <input type=range id="prix" name="prix" onchange="prixAffiche.innerHTML=this.value" min=0 max=100000 step="10" value="0">
+
                     </div>
-<br>
+                    <br>
                     <button>Filtrer</button>
+
+
                 </form>
             </aside>
-            <section class="col-8">
-                {% for ann in annonces %}
-                    <div class="annonce row">
-                        <div class="col-3">
-                            <img src="{{asset('build/images/'~ann.photoid.photo1) }}" alt="monimg" />
-                        </div>
-                        <div class="col-8">
-                            <h3>{{ ann.titre }}</h3>
-                            <p class="description_courte">{{ ann.descriptioncourte }}</p>
-                            <p>
-                                <span class="membre">{{ ann.membreid.pseudo }}</span><br>
-                                <span class="prix pull-right">{{ ann.prix }} €</span>
-                            </p>
-                        </div>
-
-
-                        {% if is_granted("ROLE_ADMIN") %}
-                            <div class="col-1">
-                                <a href="#">
-                                    <i class="fa fa-pen"></i>
-                                </a>
-                            </div>
-                        {% endif %}
-
-                    </div>
-                    <hr>
-                {% endfor %}
+            <section class="col-9 box">
+                {% if annonce|length %}
+                    {% for ann in annonce %}
+                        {% include "annonce/vignette.html.twig" %}
+                    {% endfor %}
+                {% else %}
+                    <p>Aucune annonce ne corresponds aux critères demandés</p>
+                {% endif %}
             </section>
         </div>
 
 {% endblock %}
-{% block vignette %}
 
-{% endblock %}
 {% block content %}{% endblock %}
 {% block javascripts %}{% endblock %}
 

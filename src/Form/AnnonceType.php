@@ -42,10 +42,30 @@ class AnnonceType extends AbstractType
                                                                     return $cat->getTitre() . " (" . substr($cat->getMotscles(), 0, 10) . "...)";},
                                                                 'placeholder' => 'Choississez une categorie'
                                                                 ])
-//            ->add('photo_id', FileType::class, [
-//                'label' => '1ère Photo',
-//                "required"  => false
-//            ])
+            ->add('photo1', FileType::class, [
+                'label' => '1ère Photo',
+                'mapped' => false
+            ])
+            ->add('photo2', FileType::class, [
+                'label' => '2ème Photo',
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('photo3', FileType::class, [
+                'label' => '3ème Photo',
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('photo4', FileType::class, [
+                'label' => '4ème Photo',
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('photo5', FileType::class, [
+                'label' => '5ème Photo',
+                'mapped' => false,
+                'required' => false
+            ])
         ;
     }
 

@@ -21,10 +21,10 @@ class CommentaireType extends AbstractType
             ->add('commentaire', TextareaType::class)
 
 
-            ->add('member_id', EntityType::class, array(
-                'class' => User::class,
-                'choice_label' => 'pseudo'
-            ))
+//            ->add('member_id', EntityType::class, array(
+//                'class' => User::class,
+//                'choice_label' => 'pseudo'
+//            ))
            ->add('annonce_id', EntityType::class, array(
                'class' => Annonce::class,
                'choice_label' => 'titre'

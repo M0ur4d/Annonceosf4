@@ -29,10 +29,15 @@
             <td>{{ user.nom }}</td>
             <td>{{ user.prenom }}</td>
             <td>{{ user.telephone }}</td>
-            <td>{{ user.civilite }}</td>
+            <td>
+                {% if user.civilite == "F" %}Femme
+                {% elseif user.civilite == "H"%}Homme
+                {% else %}Autre
+                {% endif %}
+            </td>
             <td>{{ user.dateenregistrement|date('d/m/Y')}}</td>
             <td> {% for statut in user.roles %}
-                {{ statut }}
+                    {{ statut }}
                 {% endfor %}</td>
             <td><a href="{{ path("newmembre") }}"><i class='fa fa-pen'></i></a> </td>
             <td><a href="{{ path("membre_delete", { id: user.id }) }}"><i class='fa fa-trash'></i></a></td>

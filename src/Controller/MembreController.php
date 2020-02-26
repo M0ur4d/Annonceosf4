@@ -8,8 +8,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Form\AnnonceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Photo;
 
 class MembreController extends AbstractController
 {
@@ -18,8 +20,8 @@ class MembreController extends AbstractController
      */
     public function index(AnnonceRepository $repo)
     {
-        $liste = $repo->findAll();
-        return $this->render("membre/vue.html.twig" , [ "liste" => $liste]);
+        $mesannonces = $this->getUser()->getAnnonces();
+        return $this->render("membre/vue.html.twig" , [ "mesannonces" => $mesannonces]);
     }
 
     /**
@@ -89,12 +91,47 @@ class MembreController extends AbstractController
 
     /**
      * @Route("/profil/annonce/ajouter", name="nouvelle_annonce")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function nouvelle_annonce(Request $rq, EntityManagerInterface $em){
         $form = $this->createForm(AnnonceType::class);
         $form->handleRequest($rq);
 
+        if ($form->isSubmitted()){
+            if($form->isValid()){
+                $nvlAnnonce = $form->getData();
+                $album = new Photo;
+                $destination = $this->getParameter("dossier_images_annonces");
+                for($i=1; $i<=5; $i++){
+                    $champs = "photo" .$i;
+                    if ($photoUploadee= $form[$champs]->getData()){
+                        $nomPhoto = pathinfo($photoUploadee->getClientOriginalName(), PATHINFO_FILENAME);
+                        $nouveauNom = trim($nomPhoto);
+                        $nouveauNom = str_replace(" ", "_", $nouveauNom);
+                        $nouveauNom .= "_" . uniqid() . "." . $photoUploadee->guessExtension();
+                        $photoUploadee->move($destination, $nouveauNom);
+                        $setter = "setPhoto$i";
+                        $album->$setter($nouveauNom);
+                    }
+                }
+                $em->persist($album);
+                $em->flush();
+                $nvlAnnonce->setDateEnregistrement( new \DateTime());
+                $nvlAnnonce->setPhotoId($album);
+                $nvlAnnonce->setMembreId($this->getUser());
+                $em->persist($nvlAnnonce);
+                $em->flush();
+                $this->addFlash('success', 'L\'annonce a bien été enregistré');
+                return $this->redirectToRoute("membre");
+            }
+            else{
+                $this->addFlash('error', 'L\'annonce n\'a pas été enregistré');
+            }
+        }
+
         $form = $form->createView();
+
+//        $nvann = $form
         return $this->render("membre/annonce.html.twig", compact("form"));
 
     }

@@ -1,7 +1,9 @@
  {% extends"base.html.twig" %}
 
  {% block body %}
-
+     <div class="columns is-centered section">
+     <div class="column is-three-quarters box">
+     <h1 class="title has-text-primary has-text-centered">Nouvelle annonce</h1>
     {{ form_start(form) }}
 
         <div class="columns">
@@ -13,11 +15,17 @@
                 {{ form_row(form.categorie_id) }}
             </div>
              <div class="column is_half">
-                 <input type="file" name="photo1">
-                 <input type="file" name="photo2">
-                 <input type="file" name="photo3">
-                 <input type="file" name="photo4">
-                 <input type="file" name="photo5">
+{#                 <input type="file" name="photo1">#}
+{#                 <input type="file" name="photo2">#}
+{#                 <input type="file" name="photo3">#}
+{#                 <input type="file" name="photo4">#}
+{#                 <input type="file" name="photo5">#}
+                 {{ form_row(form.photo1) }}
+                 {{ form_row(form.photo2) }}
+                 {{ form_row(form.photo3) }}
+                 {{ form_row(form.photo4) }}
+                 {{ form_row(form.photo5) }}
+
                  {{ form_row(form.adresse) }}
                  {{ form_row(form.cp) }}
                  {{ form_row(form.ville) }}
@@ -27,4 +35,5 @@
      <button class="button is-primary is-fullwidth">Ajouter</button>
 
     {{ form_end(form) }}
+     </div></div>
  {% endblock %}

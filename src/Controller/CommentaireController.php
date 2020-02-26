@@ -46,6 +46,8 @@ class CommentaireController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récuperer les données envoyées
             $data = $form->getData();
+            $data->setMembreId($this->getUser());
+            $data->setDateEnregistrement(new \DateTime('now'));
             $em->persist($data);
             $em->flush();
             $this->addFlash('success', 'Le commentaire a bien été enregistré');

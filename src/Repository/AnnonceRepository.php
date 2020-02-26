@@ -43,7 +43,6 @@ class AnnonceRepository extends ServiceEntityRepository
     }
 
 
-
     // /**
     //  * @return Annonce[] Returns an array of Annonce objects
     //  */

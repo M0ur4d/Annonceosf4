@@ -72,22 +72,33 @@ class CategorieController extends AbstractController
     }
 
 
-//    /**
-//     * @Route("admin/categorie/delete/{id}", name="categorie_delete")
-//     */
-//    public function cat_delete(CategorieRepository $repo, EntityManagerInterface $em, int $id)
-//    {
+    /**
+     * @Route("admin/categorie/delete/{id}", name="categorie_delete")
+     */
+    public function cat_delete(CategorieRepository $repo, EntityManagerInterface $em, int $id)
+    {
+        $cat = $repo->find($id);
+        if (!$cat) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+        $em->remove($cat);
+        $em->flush();
+        $this->addFlash('success', 'La categorie a bien été supprimé');
+        return $this->redirectToRoute('categorie', ['id' => $cat->getId()]);
+
 //        $cat = $repo->find($id);
 //        if($_POST){
 //            $em->remove($cat);
 //            $em->flush();
+//            $this->addFlash('success', 'La categorie a bien été supprimé');
 //            return $this->redirectToRoute("categorie");
 //
 //        }
-//        $this->addFlash('success', 'La categorie a bien été supprimé');
+////        $this->addFlash('error', "La suppression de la catégorie a échoué");
 //        return $this->redirectToRoute("categorie");
-//
-//    }
 
+    }
 }
 

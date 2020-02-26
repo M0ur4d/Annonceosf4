@@ -18,6 +18,13 @@ class SecurityController extends AbstractController
         //     return $this->redirectToRoute('target_path');
         // }
 
+//        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') === true) {
+//            return $this->redirectToRoute('accueil_admin');
+//        }
+//        elseif ($this->get('security.authorization_checker')->isGranted('ROLE_USER') === true) {
+//            return $this->redirectToRoute('accueil');
+//        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AnnonceRepository as AR;
 use App\Repository\CategorieRepository as CR;
@@ -15,16 +17,51 @@ class AccueilController extends AbstractController
     /**
      * @Route("/", name="accueil")
      */
-    public function index(AR $annRepo, CR $catRepo, UR $userRepo)
+    public function index(AR $annRepo, CR $catRepo, UR $userRepo, Request $rq)
     {
-        $categories = $catRepo->findAll();
-        $users = $userRepo->findAll();
 
-        $regions = $annRepo->distinctVille();
+        $categorie_choisie = null;
+        $membre_choisi = null;
+        $ville_choisie = null;
+        $prix_choisi = 0;
 
-        $annonces = $annRepo->findAll();
+        if($rq->getMethod() == "POST"){
+            $where = [];
+            if($categorie_choisie = $rq->request->get("categorie")){
+                $where["categorie_id"] = $categorie_choisie;
+            }
+            if($membre_choisi = $rq->request->get("membre")){
+                $where["membre_id"] = $membre_choisi;
+            }
+            if($ville_choisie = $rq->request->get("region")){
+//                $where["ville"] = $rq->request->get("region");
+                $where["ville"] = $ville_choisie;
+            }
+            $annonce = $annRepo->findBy($where);
 
-        return $this->render('base.html.twig', compact("categories", "users", "annonces", "regions"));
+            if($prix_choisi = $rq->request->get("prix")){
+                // La fonction array_filter permet de filtre mes valeurs d'un array selon le resultat d'un fonction
+                // (appelé callback)
+                // cette fonction doit retourner un boolean ( si le reout vaut true, la valeur
+                // de l'array est gardée dans le resultat final).
+                // array_filter retourne un array
+                // NB : la fonction callback n'a pas acces aux variables exterieurs a sa declaration.
+                //      pour pouvoir utiliser une variable existante, il faut l'utiliser.
+                $annonce = array_filter($annonce, function($ann) use($prix_choisi){
+                   return $ann->getPrix() <= $prix_choisi;
+                });
+            }
+
+
+        }else{
+            $annonce = $annRepo->findAll();
+        }
+
+        $categorie = $catRepo->findAll();
+        $user = $userRepo->findAll();
+        $region = $annRepo->distinctVille();
+
+        return $this->render('base.html.twig', compact("categorie", "user", "annonce", "region", "prix_choisi", "ville_choisie", "membre_choisi", "categorie_choisie"));
 
     }
 
