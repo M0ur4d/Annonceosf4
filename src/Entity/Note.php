@@ -26,20 +26,23 @@ class Note
      */
     private $avis;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notes")
-     */
-    private $membre_note_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notes")
-     */
-    private $membre_notant_id;
 
     /**
      * @ORM\Column(type="date")
      */
     private $date_enregistrement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="NoteRecue")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $membre_note;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="NoteDonnee")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $membre_notant;
 
     public function getId(): ?int
     {
@@ -69,30 +72,7 @@ class Note
 
         return $this;
     }
-
-    public function getMembreNoteId(): ?User
-    {
-        return $this->membre_note_id;
-    }
-
-    public function setMembreNoteId(?User $membre_note_id): self
-    {
-        $this->membre_note_id = $membre_note_id;
-
-        return $this;
-    }
-
-    public function getMembreNotantId(): ?User
-    {
-        return $this->membre_notant_id;
-    }
-
-    public function setMembreNotantId(?User $membre_notant_id): self
-    {
-        $this->membre_notant_id = $membre_notant_id;
-
-        return $this;
-    }
+    
 
     public function getDateEnregistrement(): ?\DateTimeInterface
     {
@@ -102,6 +82,30 @@ class Note
     public function setDateEnregistrement(\DateTimeInterface $date_enregistrement): self
     {
         $this->date_enregistrement = $date_enregistrement;
+
+        return $this;
+    }
+
+    public function getMembreNote(): ?User
+    {
+        return $this->membre_note;
+    }
+
+    public function setMembreNote(?User $membre_note): self
+    {
+        $this->membre_note = $membre_note;
+
+        return $this;
+    }
+
+    public function getMembreNotant(): ?User
+    {
+        return $this->membre_notant;
+    }
+
+    public function setMembreNotant(?User $membre_notant): self
+    {
+        $this->membre_notant = $membre_notant;
 
         return $this;
     }

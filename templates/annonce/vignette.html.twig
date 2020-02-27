@@ -1,19 +1,22 @@
 <div class="row">
     <div class="col-3">
-        <img src="{{ dossier_images_annonces ~ ann.photoid.photo1 }}" alt="monimg" />
+        <a href="{{ path("fiche_annonce", { id: ann.id }) }}"><img src="{{ dossier_images_annonces ~ ann.photoid.photo1 }}" alt="monimg" /></a>
     </div>
     <div class="col-8">
+        <h1><b>{{ ann.titre }}</b></h1>
         <h2>{{ ann.categorieid.titre }}</h2>
         <p>{{ ann.descriptioncourte }}</p>
         <p>
             <span class="membre">{{ ann.membreid.pseudo }}</span><br>
-            <span class="prix pull-right">{{ ann.prix }} €</span>
+            <span class="prix pull-right">{{ ann.prix|replace({".00" : "" }) }} €</span>
         </p>
     </div>
+    {%  if app.user == ann.membreid %}
     <div class="col-1">
-        <a href="#">
-            <i class="fa fa-pen"></i>
-        </a>
+        <a href="{{ path("modif_annonce", { id: ann.id }) }}"><i class="fa fa-pen"></i></a>
+        <a href="{{ path("delete_annonce", { id: ann.id }) }}"><i class="fa fa-trash"></i></a>
     </div>
+    {% else %}
+    {% endif %}
     <hr>
 </div>

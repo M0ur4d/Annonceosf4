@@ -130,9 +130,70 @@ class MembreController extends AbstractController
         }
 
         $form = $form->createView();
-
-//        $nvann = $form
         return $this->render("membre/annonce.html.twig", compact("form"));
+
+    }
+
+    /**
+     * @Route("/profil/annonce/modifie/{id}", name="modif_annonce")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function modif_annonce(Request $rq, EntityManagerInterface $em, int $id, AnnonceRepository $repo ){
+
+            $modAnn = $repo->find($id);
+            if($modAnn->getMembreId()->getId() == $this->getUser()->getId()) {
+
+                $form = $this->createForm(AnnonceType::class, $modAnn);
+                $form->handleRequest($rq);
+
+                if ($form->isSubmitted()) {
+                    if ($form->isValid()) {
+                        $destination = $this->getParameter("dossier_images_annonces");
+                        for ($i = 1; $i <= 5; $i++) {
+                            $champs = "photo" . $i;
+                            if ($photoUploadee = $form[$champs]->getData()) {
+                                $nomPhoto = pathinfo($photoUploadee->getClientOriginalName(), PATHINFO_FILENAME);
+                                $nouveauNom = trim($nomPhoto);
+                                $nouveauNom = str_replace(" ", "_", $nouveauNom);
+                                $nouveauNom .= "_" . uniqid() . "." . $photoUploadee->guessExtension();
+                                $photoUploadee->move($destination, $nouveauNom);
+                                $setter = "setPhoto$i";
+                                $modAnn->getPhotoId()->$setter($nouveauNom);
+                            }
+                        }
+                        $em->persist($modAnn);
+                        $em->flush();
+                        $this->addFlash('success', 'L\'annonce a bien été modifié');
+                        return $this->redirectToRoute("membre");
+                    } else {
+                        $this->addFlash('error', 'L\'annonce n\'a pas été modifié');
+                    }
+                }
+
+                $form = $form->createView();
+                return $this->render("membre/annonce.html.twig", compact("form"));
+            }else{
+                $this->addFlash('error', 'Vous ne pouvez pas accédez a cet URL');
+                return $this->redirectToRoute("membre");
+            }
+    }
+
+    /**
+     * @Route("/profil/annonce/delete/{id}", name="delete_annonce", methods={"GET", "POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function delete_annonce(Request $rq, EntityManagerInterface $em, int $id, AnnonceRepository $repo ){
+
+        $ann = $repo->find($id);
+        if (!$ann) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+        $em->remove($ann);
+        $em->flush();
+        $this->addFlash('success', 'L\'annonce a bien été supprimé');
+        return $this->redirectToRoute('membre', ['id' => $ann->getId()]);
 
     }
 

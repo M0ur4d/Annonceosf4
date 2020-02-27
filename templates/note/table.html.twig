@@ -5,9 +5,9 @@
 {% block body %}
 
 
-    <button type="button">
-        <a href="{{ path("note_add") }}">Ajouter une note</a>
-    </button><br><br>
+{#    <button type="button">#}
+{#        <a href="{{ path("note_add") }}">Ajouter une note</a>#}
+{#    </button><br><br>#}
     <table border="1">
         <tr>
             <td><b>ID Note</b></td>
@@ -21,8 +21,8 @@
         {% for note in liste %}
         <tr>
             <td>{{ note.id }}</td>
-            <td>{{ note.membrenoteid.id ~ " - " ~ note.membrenoteid.email }}</td>
-            <td>{{ note.membrenotantid.id ~ " - " ~ note.membrenotantid.email }}</td>
+            <td>{{ note.membrenote.id ~ " - " ~ note.membrenote.email }}</td>
+            <td>{{ note.membrenotant.id ~ " - " ~ note.membrenotant.email }}</td>
             <td>{{ note.note }}</td>
             <td>{{ note.avis }}</td>
             <td>{{ note.dateenregistrement|date('d/m/Y')}}</td>

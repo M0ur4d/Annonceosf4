@@ -1,30 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello NoteController!{% endblock %}
+{% block title %}Note du membre{% endblock %}
+
+{#{% block body %}#}
+{#<div class="title">#}
+{#    <h1>Ajouter une note</h1>#}
+{#</div>#}
+{#    <div class="columns">#}
+{#       <p><strong>Pseudo : </strong>{{ membre.pseudo }}</p>#}
+{#       <p><strong>Date inscription : </strong>{{ membre.dateenregistrement|date("d/m/y") }}</p>#}
+{#        <p class="column">#}
+{#            <strong class="column is-one-third">Annonces</strong>#}
+{#            <div class="column box">#}
+{#                {%  for annonce in membre.annonces %}#}
+{#                    <p>{{ annonce.titre }}</p>#}
+{#                {% endfor %}#}
+{#           </div>#}
+{#        </p>#}
+
+{#    <div class="column is-half box">#}
+{#        {{ form_start(form) }}#}
+{#        <button class="button is-primary is-fullwidth">Ajouter</button>#}
+{#        {{ form_end(form) }}#}
+{#    </div>#}
+{#</div>#}
+{#{% endblock %}#}
 
 {% block body %}
+    {# {{ form(form) }} #}
 
-    <h1>Ajouter une note</h1>
-
-    <section class=""section has-backgroud-white-ter>
-        {{ form_start(form) }}
-        <button class="button is-primary is-fullwidth">Ajouter</button>
-        {{ form_end(form) }}
-    </section>
+    {# {{ form_start(form)}}
+        <h2>Veuillez noter cet individu : </h2>
+    {{ form_end(form)}} #}
 
 
-{#<style>#}
-{#    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }#}
-{#    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }#}
-{#</style>#}
+    <h1 class="title">Veuillez noter cet individu : </h1>
+    <div class="columns section">
+        <div class="column is-half">
+            <p><strong>Pseudo : </strong>{{ membre.pseudo }}</p>
+            <p><strong>Date d'inscription : </strong>{{ membre.dateenregistrement|date("d/m/y") }}</p>
+            <p class="columns">
+                <strong class="column is-one-third">Annonces : </strong>
+                <div class="column">
+                    {% for annonce in membre.annonces  %}
+            <p>{{ annonce.titre }}</p>
+            {% endfor %}
+        </div>
+        </p>
+    </div>
 
-{#<div class="example-wrapper">#}
-{#    <h1>Hello {{ controller_name }}! ✅</h1>#}
+    <div class="column box">
+        <h1 class="title has-text-primary has-text-centered">Attribuer une note : </h1>
 
-{#    This friendly message is coming from:#}
-{#    <ul>#}
-{#        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/annonceosf4/src/Controller/NoteController.php'|file_link(0) }}">src/Controller/NoteController.php</a></code></li>#}
-{#        <li>Your template at <code><a href="{{ 'C:/wamp64/www/annonceosf4/templates/note/index.html.twig'|file_link(0) }}">templates/note/index.html.twig</a></code></li>#}
-{#    </ul>#}
-{#</div>#}
+                {{ form_start(form) }}
+                <button class="button is-primary is-fullwidth">Ajouter</button>
+                {{ form_end(form) }}
+
+    </div>
+    </div>
+
 {% endblock %}

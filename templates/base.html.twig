@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <title>{% block title %}Welcome!{% endblock %}</title>
+
     {% block stylesheets %}{% endblock %}
 {#     CSS#}
     {{ encore_entry_link_tags("app") }}
@@ -29,60 +30,81 @@
         {{ message }}
     </div>
 {% endfor %}
-{#    {% for message in app.flashes('error') %}#}
-{#        <div class="alert alert-danger">#}
-{#            {{ message }}#}
-{#        </div>#}
-{#    {% endfor %}#}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
 
 {% block body %}
     <br>
         <div class="row">
 
-            <aside class="col-3">
+            <aside class="col-4">
                 <form method="POST">
-                    <div>
-                        <label>Catégorie</label>
+                    <div class="control">
+                        <div class="select">
                         <select name="categorie">
                             <option value="">Toutes les catégories</option>
                             {% for cat in categorie %}
                                 <option value='{{ cat.id }}' {{ categorie_choisie == cat.id ? "selected" : ""  }}>  {{ cat.titre }} </option>
                             {% endfor %}
                         </select>
+                        </div>
                     </div>
-
-                    <div>
-                        <label>Régions</label>
+<br>
+                    <div class="control">
+                        <div class="select">
                         <select name="region">
                             <option value="">Toutes les régions</option>
                             {% for ville in region %}
                                 <option value='{{ ville.ville }}' {{ ville_choisie == ville.ville ? "selected" : ""  }} >  {{ ville.ville }} </option>
                             {% endfor %}
                         </select>
+                        </div>
                     </div>
-
-                    <div>
-                        <label>Membres</label>
+<br>
+                    <div class="control">
+                        <div class="select">
                         <select name="membre">
                             <option value="">Tous les membres</option>
-                            {% for m in user %}
-                                <option value='{{ m.id }}' {{ membre_choisi == m.id ? "selected" : ""  }}>  {{ m.pseudo }} </option>
-                            {% endfor %}
+                                {% for m in user %}
+                                        <option value='{{ m.id }}' {{ membre_choisi == m.id ? "selected" : ""  }}>  {{ m.pseudo }} </option>
+                                {% endfor %}
+
                         </select>
+                        </div>
                     </div>
                     <br>
                     <div>
-                        <label>Prix <output id="prixAffiche">{{ prix_choisi }}</output></label>&nbsp€<br>
-                        <input type=range id="prix" name="prix" onchange="prixAffiche.innerHTML=this.value" min=0 max=100000 step="10" value="0">
+                        <label><b>Prix</b> <output id="prixAffiche">{{ prix_choisi }}</output></label>&nbsp€<br>
+                        <input type=range class="custom-range w-50" id="prix" name="prix" onchange="prixAffiche.innerHTML=this.value" min=0 max=100000 step="10" value="{{ prix_choisi }}">
 
                     </div>
                     <br>
-                    <button>Filtrer</button>
-
-
+                    <button class="button is-info is-rounded">Filtrer</button>
+                    <br>
+                    <br>
+                    <div>
+                        <p><u>Top Annonces (les plus anciennes)</u></p>
+                        <ul>
+                            {% for top in topannonce %}
+                               <li>{{ loop.index }} - {{ top.titre }} - {{ top.date_enregistrement|date('d/m/Y') }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <br>
+                    <div>
+                        <p><u>Top Categories (plus d'annonces)</u></p>
+                        <ul>
+                            {% for top in topannonce %}
+                                <li>{{ loop.index }} - {{ top.titre }} - {{ top.date_enregistrement|date('d/m/Y') }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </form>
             </aside>
-            <section class="col-9 box">
+            <section class="col-8 box">
                 {% if annonce|length %}
                     {% for ann in annonce %}
                         {% include "annonce/vignette.html.twig" %}

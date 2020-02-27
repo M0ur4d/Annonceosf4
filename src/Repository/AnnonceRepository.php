@@ -42,6 +42,39 @@ class AnnonceRepository extends ServiceEntityRepository
 
     }
 
+    public function topAnnonce()
+    {
+        return $this->createQueryBuilder('annonce')
+            ->select('annonce.titre, annonce.date_enregistrement')
+            ->orderBy('annonce.date_enregistrement', 'ASC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+            ;
+
+        //SELECT `titre`,`date_enregistrement` FROM `annonce` ORDER BY `date_enregistrement`ASC LIMIT 5
+
+
+    }
+
+//    public function topCat()
+//    {
+//        return $this->createQueryBuilder('annonce')
+//            ->select('annonce.titre')
+//            ->groupBy('annonce.categorie_id', 'ASC')
+//            ->setMaxResults(5)
+//            ->getQuery()
+//            ->getResult()
+//            ;
+//
+//        //SELECT `categorie_id_id` FROM `annonce` GROUP BY categorie_id_id
+//
+//
+//    }
+
+
+
+
 
     // /**
     //  * @return Annonce[] Returns an array of Annonce objects

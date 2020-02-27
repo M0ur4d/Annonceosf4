@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\NoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,7 +64,7 @@ class User implements UserInterface
     private $date_enregistrement;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, unique=true)
      */
     private $pseudo;
 
@@ -78,15 +79,22 @@ class User implements UserInterface
     private $commentaires;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="membre_note_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="membre_note", orphanRemoval=true)
      */
-    private $notes;
+    private $NoteRecue;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="membre_notant", orphanRemoval=true)
+     */
+    private $NoteDonnee;
+
 
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
-        $this->notes = new ArrayCollection();
+        $this->NoteRecue = new ArrayCollection();
+        $this->NoteDonnee = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -304,31 +312,63 @@ class User implements UserInterface
     /**
      * @return Collection|Note[]
      */
-    public function getNotes(): Collection
+    public function getNoteRecue(): Collection
     {
-        return $this->notes;
+        return $this->NoteRecue;
     }
 
-    public function addNote(Note $note): self
+    public function addNoteRecue(Note $noteRecue): self
     {
-        if (!$this->notes->contains($note)) {
-            $this->notes[] = $note;
-            $note->setMembreNoteId($this);
+        if (!$this->NoteRecue->contains($noteRecue)) {
+            $this->NoteRecue[] = $noteRecue;
+            $noteRecue->setMembreNote($this);
         }
 
         return $this;
     }
 
-    public function removeNote(Note $note): self
+    public function removeNoteRecue(Note $noteRecue): self
     {
-        if ($this->notes->contains($note)) {
-            $this->notes->removeElement($note);
+        if ($this->NoteRecue->contains($noteRecue)) {
+            $this->NoteRecue->removeElement($noteRecue);
             // set the owning side to null (unless already changed)
-            if ($note->getMembreNoteId() === $this) {
-                $note->setMembreNoteId(null);
+            if ($noteRecue->getMembreNote() === $this) {
+                $noteRecue->setMembreNote(null);
             }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNoteDonnee(): Collection
+    {
+        return $this->NoteDonnee;
+    }
+
+    public function addNoteDonnee(Note $noteDonnee): self
+    {
+        if (!$this->NoteDonnee->contains($noteDonnee)) {
+            $this->NoteDonnee[] = $noteDonnee;
+            $noteDonnee->setMembreNotant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoteDonnee(Note $noteDonnee): self
+    {
+        if ($this->NoteDonnee->contains($noteDonnee)) {
+            $this->NoteDonnee->removeElement($noteDonnee);
+            // set the owning side to null (unless already changed)
+            if ($noteDonnee->getMembreNotant() === $this) {
+                $noteDonnee->setMembreNotant(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

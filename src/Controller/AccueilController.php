@@ -58,10 +58,12 @@ class AccueilController extends AbstractController
         }
 
         $categorie = $catRepo->findAll();
-        $user = $userRepo->findAll();
+        $user = $userRepo->findByRole("ROLE_USER");
         $region = $annRepo->distinctVille();
+        $topannonce = $annRepo->topAnnonce();
+//        dd($topannonce);
 
-        return $this->render('base.html.twig', compact("categorie", "user", "annonce", "region", "prix_choisi", "ville_choisie", "membre_choisi", "categorie_choisie"));
+        return $this->render('base.html.twig', compact("categorie", "user", "annonce", "region", "prix_choisi", "ville_choisie", "membre_choisi", "categorie_choisie", "topannonce"));
 
     }
 

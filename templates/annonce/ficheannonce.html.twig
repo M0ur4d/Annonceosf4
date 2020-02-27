@@ -1,22 +1,32 @@
-<div class="row">
-    <div class="col-3">
-        <img src="{{ dossier_images_annonces ~ ann.photoid.photo1 }}" alt="monimg" />
+{% extends "base.html.twig" %}
+{% block body %}
+<div>{{ annonce.titre }} </div>
+    <div><a href="mailto:{{ annonce.membreid.email }}"> Contacter {{ annonce.membreid.pseudo }} {{ moyenne }}</a></div>
+<div class="box">
+    <div class="col-6">
+
+        <img src="{{ dossier_images_annonces ~ annonce.photoid.photo1 }}" alt="monimg"  width="300px" height="300px"/>
     </div>
-    <div class="col-8">
-        <h1>{{ ann.titre }}</h1>
-        <h2>{{ ann.categorieid.titre }}</h2>
-        <p>{{ ann.descriptioncourte }}</p>
-        <p>
-            <span class="membre">{{ ann.membreid.pseudo }}</span><br>
-            <span class="prix pull-right">{{ ann.prix }} €</span>
-        </p>
+    <div class="col-6">
+        description :
+        {{ annonce.descriptionlongue  }}
     </div>
-    {%  if app.user == ann.membreid %}
-    <div class="col-1">
-        <a href="{{ path("modif_annonce", { id: ann.id }) }}"><i class="fa fa-pen"></i></a>
-        <a href="{{ path("delete_annonce", { id: ann.id }) }}"><i class="fa fa-trash"></i></a>
-    </div>
-    {% else %}
-    {% endif %}
-    <hr>
 </div>
+<div class="colums">
+    <div class="column">date de publication: {{ annonce.dateenregistrement|date('d/m/Y')}}</div>
+    <div class="column">Membre : {{ annonce.membreid.pseudo }}</div>
+    <div class="column">Prix :{{ annonce.prix|replace({".00" : "" }) }} €</div>
+    <div class="column">Adresse :{{ annonce.adresse ~ " " ~ annonce.cp ~ " " ~ annonce.ville}}</div>
+</div>
+<div>
+    google maps
+</div>
+    <div>
+autres annonces
+        {% for photo in touteann %}
+            <a href="{{ path("fiche_annonce", { id: photo.id }) }}"><img src="{{ dossier_images_annonces ~ photo.photoid.photo1 }}" alt="monimg" width="200px" height="200px" /></a>
+        {% endfor %}
+    </div>
+    <div><a href="{{ path("attribuer_note", { pseudo: annonce.membreid.pseudo }) }}"> Commenter </a></div>
+
+{% endblock %}

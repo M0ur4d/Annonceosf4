@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Form\NoteType;
 use App\Repository\NoteRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository as UR;
 
 
 class NoteController extends AbstractController
@@ -24,33 +26,35 @@ class NoteController extends AbstractController
     }
 
     /**
-     * @Route("admin/note/add", name="note_add")
+     * @Route("profil/attribuer-note/{pseudo}", name="attribuer_note")
      */
-    public function add(Request $request, EntityManagerInterface $em)
-    {
-        $form = $this->createForm(NoteType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $data->setMembreId($this->getUser());
-            $data->setDateEnregistrement(new \DateTime('now'));
-            $em->persist($data);
-            $em->flush();
-            $this->addFlash('success', 'La note a bien été enregistrée');
-
-        } elseif (!$form->isValid()) {
-//            $this->addFlash('error','Les données du formulaires ne sont pas valides');
-//            $form = $this->createForm(CommentaireType::class, $form->getData());
-            return $this->render('note/index.html.twig', ['form' => $form->createView()]);
+    public function attribuer(UR $mr, Request $rq, EntityManagerInterface $em, $pseudo){
+        if($pseudo == $this->getUser()->getPseudo()){
+            $this->addFlash("error", "Vous ne pouvez pas vous noter vous-même, petit salopiaud !");
+            return $this->redirectToRoute("profil");
         }
-        return $this->redirectToRoute("note");
-    }
 
-//    public function add()
-//    {
-//        $form = $this->createForm(NoteType::class);
-//
-//        return $this->render("note/index.html.twig"  , [ "form" => $form->createView()]);
-//    }
+        $membre = $mr->findOneBy([ "pseudo" => $pseudo ]);
+
+        $form = $this->createForm(NoteType::class);
+        $form->handleRequest($rq);
+        if($form->isSubmitted()){
+            if($form->isValid()){
+                $note = $form->getData();
+                $note->setMembreNotant($this->getUser());
+                $note->setDateEnregistrement(new \DateTime());
+                $note->setMembreNote($membre);
+                $em->persist($note);
+                $em->flush();
+                $this->addFlash("success", "Votre note a bien été prise en compte");
+                return $this->redirectToRoute("membre");
+            }
+            else{
+                $this->addFlash("error", "Une erreur est survenu !");
+            }
+        }
+
+        $form = $form->createView();
+        return $this->render("note/attribuer.html.twig", compact("membre", "form"));
+    }
 }

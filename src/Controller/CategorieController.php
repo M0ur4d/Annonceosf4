@@ -100,5 +100,29 @@ class CategorieController extends AbstractController
 //        return $this->redirectToRoute("categorie");
 
     }
+
+    /**
+     * @Route("admin/categorie/modif/{id}", name="categorie_modif", methods={"GET", "POST"} )
+     */
+    public function modif(Request $request, EntityManagerInterface $em, CategorieRepository $repo, int $id)
+    {
+
+        $cat = $repo->find($id);
+        $form = $this->createForm(CategorieType::class);
+
+        if($form->handleRequest($request)->isSubmitted()){
+            $data = $form->getData();
+            $em->persist($data);
+            $em->flush();
+            $this->addFlash('success', 'La categorie a bien été enregistré');
+
+        }
+        elseif(!$form->isValid()){
+            return $this->render('categorie/index.html.twig',['cat' =>$cat,'form' => $form->createView()]);
+        }
+        return $this->redirectToRoute("categorie");
+    }
+
+
 }
 
