@@ -6,7 +6,7 @@
 
 
     <button type="button">
-        <a href="{{ path("newmembre") }}">Ajouter un membre</a>
+        <a href="#">Ajouter un membre</a>
     </button><br><br>
     <table border="1">
         <tr>
@@ -37,13 +37,11 @@
             </td>
             <td>{{ user.dateenregistrement|date('d/m/Y')}}</td>
             <td> {% for statut in user.roles %}
-                    {% if statut == "ROLE_USER" %}
-{#                    {{ statut }}#}Membre
-                    {% else %}
-                    Admin
+                    {% if statut == "ROLE_USER" %}Membre
+                    {% else %}Admin
                     {% endif %}
                 {% endfor %}</td>
-            <td><a href="{{ path("newmembre") }}"><i class='fa fa-pen'></i></a> </td>
+            <td><a href="#"><i class='fa fa-pen'></i></a> </td>
             <td><a href="{{ path("membre_delete", { id: user.id }) }}"><i class='fa fa-trash'></i></a></td>
 
         </tr>

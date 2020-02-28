@@ -34,42 +34,42 @@ class MembreController extends AbstractController
         return $this->render("membre/table.html.twig"  , [ "liste" => $liste]);
     }
 
-    /**
-     * @Route("admin/newmembre", name="newmembre")
-     */
-    public function newUser(EntityManagerInterface $em){
-
-        if($_POST){
-            if (!empty($_POST["nom"] &&
-                !empty($_POST["prenom"]) &&
-                !empty($_POST["pseudo"]) &&
-                !empty($_POST["telephone"]) &&
-                !empty($_POST["email"]) &&
-                !empty($_POST["password"])
-            )){
-
-                $user = new User;
-                $user->setNom($_POST["nom"]);
-                $user->setPrenom($_POST["prenom"]);
-                $user->setPseudo($_POST["pseudo"]);
-                $user->setPassword($_POST["password"] = password_hash($_POST["password"], PASSWORD_DEFAULT));
-
-                $user->setTelephone($_POST["telephone"]);
-                $user->setEmail($_POST["email"]);
-
-                $user->setCivilite($_POST["civilite"]= isset($_POST["civilite"]) ? $_POST["civilite"] : 0);
-                $user->setRoles($_POST["roles"] = isset($_POST["roles"]) ? $_POST["roles"] : 0);
-
-                $user->setDateEnregistrement((new \DateTime('now')));
-
-                $em->persist($user);
-                $em->flush();
-                return $this->redirectToRoute("membre_list");
-            }
-        }
-        $msg = "Veuillez entrez un membre";
-        return $this->render("membre/form.html.twig", ["message" => $msg]);
-    }
+//    /**
+//     * @Route("admin/newmembre", name="newmembre")
+//     */
+//    public function newUser(EntityManagerInterface $em){
+//
+//        if($_POST){
+//            if (!empty($_POST["nom"] &&
+//                !empty($_POST["prenom"]) &&
+//                !empty($_POST["pseudo"]) &&
+//                !empty($_POST["telephone"]) &&
+//                !empty($_POST["email"]) &&
+//                !empty($_POST["password"])
+//            )){
+//
+//                $user = new User;
+//                $user->setNom($_POST["nom"]);
+//                $user->setPrenom($_POST["prenom"]);
+//                $user->setPseudo($_POST["pseudo"]);
+//                $user->setPassword($_POST["password"] = password_hash($_POST["password"], PASSWORD_DEFAULT));
+//
+//                $user->setTelephone($_POST["telephone"]);
+//                $user->setEmail($_POST["email"]);
+//
+//                $user->setCivilite($_POST["civilite"]= isset($_POST["civilite"]) ? $_POST["civilite"] : 0);
+//                $user->setRoles($_POST["roles"] = isset($_POST["roles"]) ? $_POST["roles"] : 0);
+//
+//                $user->setDateEnregistrement((new \DateTime('now')));
+//
+//                $em->persist($user);
+//                $em->flush();
+//                return $this->redirectToRoute("membre_list");
+//            }
+//        }
+//        $msg = "Veuillez entrez un membre";
+//        return $this->render("membre/form.html.twig", ["message" => $msg]);
+//    }
 
 
     /**
@@ -141,7 +141,7 @@ class MembreController extends AbstractController
     public function modif_annonce(Request $rq, EntityManagerInterface $em, int $id, AnnonceRepository $repo ){
 
             $modAnn = $repo->find($id);
-            if($modAnn->getMembreId()->getId() == $this->getUser()->getId()) {
+            if($modAnn->getMembreId()->getId() == $this->getUser()->getId()){
 
                 $form = $this->createForm(AnnonceType::class, $modAnn);
                 $form->handleRequest($rq);

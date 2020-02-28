@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Annonce;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -44,9 +45,9 @@ class AnnonceRepository extends ServiceEntityRepository
 
     public function topAnnonce()
     {
-        return $this->createQueryBuilder('annonce')
+        return $this->createQueryBuilder('a')
             ->select('annonce.titre, annonce.date_enregistrement')
-            ->orderBy('annonce.date_enregistrement', 'ASC')
+            ->orderBy('a.date_enregistrement', 'ASC')
             ->setMaxResults(5)
             ->getQuery()
             ->getResult()
@@ -56,6 +57,52 @@ class AnnonceRepository extends ServiceEntityRepository
 
 
     }
+
+    public function findTop5MembresActifs()
+    {
+        $resultat = $this->createQueryBuilder('a')
+            ->select("u.id, u.pseudo, COUNT(a.membre_id) nb")
+            ->join("a.membre_id", "u")
+            ->groupBy("u.id")
+            ->orderBy("nb", "DESC")
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
+        return $resultat;
+
+// SELECT u.id, u.pseudo, COUNT(a.membre_id_id) Nb
+// FROM user u JOIN annonce a ON a.membre_id_id=u.id
+// GROUP BY membre_id_id
+// ORDER BY Nb DESC
+    }
+
+    /**
+     * Top Categories
+     */
+    public function topCat()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('c.titre, COUNT(c.id) nb')
+            ->join("a.categorie_id", "c")
+            ->groupBy('c.id')
+            ->orderBy("nb", "DESC")
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+            ;
+        //select categorie.titre
+        //from categorie join annonce on categorie.id=annonce.categorie_id_id
+        //group by categorie.id
+
+        //select c.titre
+        //from categorie c join annonce a on c.id=a.categorie_id_id
+        //group by c.id
+    }
+
+
+
+
 
 //    public function topCat()
 //    {

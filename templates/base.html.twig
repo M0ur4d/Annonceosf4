@@ -87,20 +87,20 @@
                     <br>
                     <div>
                         <p><u>Top Annonces (les plus anciennes)</u></p>
-                        <ul>
-                            {% for top in topannonce %}
-                               <li>{{ loop.index }} - {{ top.titre }} - {{ top.date_enregistrement|date('d/m/Y') }}</li>
-                            {% endfor %}
-                        </ul>
+{#                        <ul>#}
+{#                            {% for top in topannonce %}#}
+{#                               <li>{{ loop.index }} - {{ top.titre }} - {{ top.date_enregistrement|date('d/m/Y') }}</li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
                     </div>
                     <br>
                     <div>
-                        <p><u>Top Categories (plus d'annonces)</u></p>
-                        <ul>
-                            {% for top in topannonce %}
-                                <li>{{ loop.index }} - {{ top.titre }} - {{ top.date_enregistrement|date('d/m/Y') }}</li>
-                            {% endfor %}
-                        </ul>
+                        <p><u>Top Categories</u></p>
+{#                        <ul>#}
+{#                            {% for top in topcat %}#}
+{#                                <li>{{ loop.index }} - {{ top.titre }}</li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
                     </div>
                 </form>
             </aside>

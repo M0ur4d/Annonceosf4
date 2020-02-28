@@ -54,16 +54,30 @@ class AccueilController extends AbstractController
 
 
         }else{
-            $annonce = $annRepo->findAll();
+            $mot = $rq->query->get("recherche");
+            if($mot){
+                $cats = $catRepo->recherche($mot);
+                $annonce = [];
+                foreach($cats as $cat){
+                    foreach ($cat->getAnnonces() as $annonceCategorie){
+                        $annonce[] = $annonceCategorie;
+                    }
+                }
+
+            }else{
+                $annonce = $annRepo->findAll();
+            }
+
         }
 
         $categorie = $catRepo->findAll();
         $user = $userRepo->findByRole("ROLE_USER");
         $region = $annRepo->distinctVille();
-        $topannonce = $annRepo->topAnnonce();
-//        dd($topannonce);
+//        $topannonce = $annRepo->topAnnonce();
+//        $topCat = $catRepo->topCat();
 
-        return $this->render('base.html.twig', compact("categorie", "user", "annonce", "region", "prix_choisi", "ville_choisie", "membre_choisi", "categorie_choisie", "topannonce"));
+
+        return $this->render('base.html.twig', compact("categorie", "user", "annonce", "region", "prix_choisi", "ville_choisie", "membre_choisi", "categorie_choisie"));
 
     }
 

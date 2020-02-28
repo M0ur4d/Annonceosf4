@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Note;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -34,7 +35,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
-    }
+}
 
      /**
       * @return User[] Returns an array of User objects
@@ -46,6 +47,33 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findToMembresNotes(){
+        $entityManager = $this->getEntityManager();
+        $requeteSQL = "SELECT u.id, u.pseudo, AVG(n.note) moyenne 
+                       FROM user u JOIN note n ON n.membre_note_id = u.id 
+                       GROUP BY u.id 
+                       ORDER BY moyenne DESC 
+                       LIMIT 5";
+        $requete = $entityManager->createQuery($requeteSQL);
+        return $requete->getResult();
+    }
+
+
+     /**
+      * @return User[] Returns an array of User objects
+      */
+    public function findTop5MembresNotes()
+    {
+        $resultat = $this->createQueryBuilder('u')
+            ->join("n.membre_note", "n")
+//            ->orderBy('u.id', 'ASC')
+//            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+
+        return $resultat;
     }
 
 
